@@ -16,12 +16,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.gadsleaderboard.Api;
 import com.example.gadsleaderboard.R;
-import com.example.gadsleaderboard.model.LeadersHour;
+import com.example.gadsleaderboard.model.LeadersScore;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,9 +38,12 @@ import java.util.List;
  */
 public class SkillIQLeadersFragment extends Fragment {
     private RecyclerView rcv;
-    private List<LeadersHour> mylist;
-    private LearningLeadersFragment.LeaderHourAdapter myAdapter;
+    private List<LeadersScore> mylist;
+    private SkillIQLeadersFragment.LeaderScoreAdapter myAdapter;
     ProgressBar mprogressBar;
+    private String BASE_URL = "https://gadsapi.herokuapp.com";
+
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -81,27 +92,60 @@ public class SkillIQLeadersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_skill_i_q_leaders, container, false);
         rcv = view.findViewById(R.id.rcv);
-        //   mprogressBar = view.findViewById(R.id.progressBarRcv);
+        mprogressBar = view.findViewById(R.id.progress);
 
         init();
+
         return  view;
+    }
+    private void request() {
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        api.listLeaderSkilliq().enqueue(new Callback<List<LeadersScore>>() {
+            @Override
+            public void onResponse(Call<List<LeadersScore>> call, Response<List<LeadersScore>> response) {
+                if(response.isSuccessful()){
+                    List<LeadersScore> list= response.body();
+                    if(list!=null){
+                        myAdapter.mylList.clear();
+                        myAdapter.mylList.addAll(list);
+                        myAdapter.notifyDataSetChanged();
+                        hideRemoveProgressBar();
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LeadersScore>> call, Throwable t) {
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+                Log.e("teste", "erro"+t.toString());
+                hideRemoveProgressBar();
+            }
+        });
     }
 
     private void init() {
-        Log.e("HomeFragment", "initCasaMas");
+        mprogressBar.setVisibility(View.VISIBLE);
         mylist = new ArrayList<>();
-        myAdapter = new LearningLeadersFragment.LeaderHourAdapter(getContext(), mylist,mprogressBar);
+        myAdapter = new SkillIQLeadersFragment.LeaderScoreAdapter(getContext(), mylist);
         rcv.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rcv.setLayoutManager(mLayoutManager);
         rcv.setItemAnimator(new DefaultItemAnimator());
         rcv.setAdapter(myAdapter);
+        request();
     }
 
     static class LeaderScoreAdapter extends RecyclerView.Adapter< SkillIQLeadersFragment.LeaderScoreAdapter.LeaderScoreViewHolder> {
         private Context context;
-        private List<LeadersHour> mylList;
-        ProgressBar mprogressBar;
+        private List<LeadersScore> mylList;
 
 
         public class LeaderScoreViewHolder extends RecyclerView.ViewHolder {
@@ -131,16 +175,16 @@ public class SkillIQLeadersFragment extends Fragment {
         }
 
 
-        public  LeaderScoreAdapter(Context context, List<LeadersHour> mylList, ProgressBar progressBar) {
+        public  LeaderScoreAdapter(Context context, List<LeadersScore> mylList) {
             this.context = context;
             this.mylList = mylList;
-            this.mprogressBar = progressBar;
+
         }
 
         @Override
         public SkillIQLeadersFragment.LeaderScoreAdapter.LeaderScoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item_leaders_hour, parent, false);
+                    .inflate(R.layout.list_item_leaders_skill, parent, false);
 
             return new SkillIQLeadersFragment.LeaderScoreAdapter.LeaderScoreViewHolder(itemView);
         }
@@ -148,12 +192,12 @@ public class SkillIQLeadersFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull SkillIQLeadersFragment.LeaderScoreAdapter.LeaderScoreViewHolder holder, int position) {
 
-            LeadersHour item = mylList.get(position);
+            LeadersScore item = mylList.get(position);
             //holder.photo.
             holder.name.setText(item.getName());
             String country=item.getCountry();
-            String score=item.getHours();
-            holder.description.setText(score+"learning hour ,"+country);
+            String score=item.getScore();
+            holder.description.setText(score+""+" Skill IQ Score ,"+""+country);
 
         }
 
@@ -163,6 +207,12 @@ public class SkillIQLeadersFragment extends Fragment {
         }
 
 
+
+    }
+    private void hideRemoveProgressBar() {
+        if (mprogressBar.isShown()) {
+            mprogressBar.setVisibility(View.GONE);
+        }
 
     }
 }

@@ -16,16 +16,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.gadsleaderboard.Api;
 import com.example.gadsleaderboard.R;
 import com.example.gadsleaderboard.model.LeadersHour;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class LearningLeadersFragment extends Fragment {
     private RecyclerView rcv;
+    private String BASE_URL = "https://gadsapi.herokuapp.com";
     private List<LeadersHour> mylist;
     private LeaderHourAdapter myAdapter;
     ProgressBar mprogressBar;
@@ -67,37 +76,71 @@ public class LearningLeadersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_leanning_leaders, container, false);
         rcv = view.findViewById(R.id.rcv);
-     //   mprogressBar = view.findViewById(R.id.progressBarRcv);
+        mprogressBar = view.findViewById(R.id.progress);
 
         init();
-        return  view;
+        return view;
     }
 
     private void init() {
-        Log.e("HomeFragment", "initCasaMas");
+        Log.e("LeaningLeaderFragment", "init");
+        mprogressBar.setVisibility(View.VISIBLE);
         mylist = new ArrayList<>();
-        myAdapter = new LeaderHourAdapter(getContext(), mylist,mprogressBar);
+        myAdapter = new LeaderHourAdapter(getContext(), mylist);
         rcv.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rcv.setLayoutManager(mLayoutManager);
         rcv.setItemAnimator(new DefaultItemAnimator());
         rcv.setAdapter(myAdapter);
+        request();
     }
 
-    static class LeaderHourAdapter extends RecyclerView.Adapter< LeaderHourAdapter.LeaderHourViewHolder> {
+    private void request() {
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        api.listLeadersHour().enqueue(new Callback<List<LeadersHour>>() {
+            @Override
+            public void onResponse(Call<List<LeadersHour>> call, Response<List<LeadersHour>> response) {
+                if (response.isSuccessful()) {
+                    List<LeadersHour> list = response.body();
+                    if (list != null) {
+                        myAdapter.mylList.clear();
+                        myAdapter.mylList.addAll(list);
+                        myAdapter.notifyDataSetChanged();
+                        hideRemoveProgressBar();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LeadersHour>> call, Throwable t) {
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+                Log.e("teste", "erro" + t.toString());
+                hideRemoveProgressBar();
+            }
+        });
+    }
+
+    static class LeaderHourAdapter extends RecyclerView.Adapter<LeaderHourAdapter.LeaderHourViewHolder> {
         private Context context;
         private List<LeadersHour> mylList;
-        ProgressBar mprogressBar;
+
 
 
         public class LeaderHourViewHolder extends RecyclerView.ViewHolder {
-            public TextView name,description;
+            public TextView name, description;
             public ImageView photo;
-            ProgressBar mprogressBar;
-            int pos;
 
 
-            public  LeaderHourViewHolder(View view) {
+
+
+            public LeaderHourViewHolder(View view) {
                 super(view);
                 name = view.findViewById(R.id.name);
                 description = view.findViewById(R.id.description);
@@ -117,10 +160,10 @@ public class LearningLeadersFragment extends Fragment {
         }
 
 
-        public  LeaderHourAdapter(Context context, List<LeadersHour> mylList, ProgressBar progressBar) {
+        public LeaderHourAdapter(Context context, List<LeadersHour> mylList) {
             this.context = context;
             this.mylList = mylList;
-            this.mprogressBar = progressBar;
+
         }
 
         @Override
@@ -134,12 +177,12 @@ public class LearningLeadersFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull LeaderHourViewHolder holder, int position) {
 
-               LeadersHour item = mylList.get(position);
-               //holder.photo.
+            LeadersHour item = mylList.get(position);
+            //holder.photo.
             holder.name.setText(item.getName());
-            String country=item.getCountry();
-            String hour=item.getHours();
-            holder.description.setText(hour+"learning hour ,"+country);
+            String country = item.getCountry();
+            String hour = item.getHours();
+            holder.description.setText(hour + "" + "learning hour ," + country);
 
         }
 
@@ -149,6 +192,11 @@ public class LearningLeadersFragment extends Fragment {
         }
 
 
+    }
+    private void hideRemoveProgressBar() {
+        if (mprogressBar.isShown()) {
+            mprogressBar.setVisibility(View.GONE);
+        }
 
     }
 }
