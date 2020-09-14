@@ -3,4 +3,4 @@ GADS-Leaderboard - Android application to display an updated list of the Top Lea
 
 
 ScreenShot
-https://github.com/Luis-Miguel1/GADS-Leaderboard/issues/1#issue-701298880
+
