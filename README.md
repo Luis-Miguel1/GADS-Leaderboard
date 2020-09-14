@@ -4,5 +4,4 @@ GADS-Leaderboard - Android application to display an updated list of the Top Lea
 
 ScreenShot:
 
-tela11.PNG
 
