@@ -21,7 +21,9 @@ import android.widget.Toast;
 import com.example.gadsleaderboard.Api;
 import com.example.gadsleaderboard.R;
 import com.example.gadsleaderboard.model.LeadersHour;
+import com.squareup.picasso.Picasso;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,17 +136,18 @@ public class LearningLeadersFragment extends Fragment {
 
 
         public class LeaderHourViewHolder extends RecyclerView.ViewHolder {
-            public TextView name, description;
-            public ImageView photo;
+            public TextView name,skillCountry,learnersHour;
+            public ImageView learnerImg;
 
 
 
 
             public LeaderHourViewHolder(View view) {
                 super(view);
-                name = view.findViewById(R.id.name);
-                description = view.findViewById(R.id.description);
-                photo = view.findViewById(R.id.photo);
+                name = view.findViewById(R.id.learnersName);
+                skillCountry = view.findViewById(R.id.learnersCountry);
+                learnerImg = view.findViewById(R.id.learnerImg);
+                learnersHour = view.findViewById(R.id.learnersHour);
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -176,13 +179,12 @@ public class LearningLeadersFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull LeaderHourViewHolder holder, int position) {
-
             LeadersHour item = mylList.get(position);
             //holder.photo.
             holder.name.setText(item.getName());
-            String country = item.getCountry();
-            String hour = item.getHours();
-            holder.description.setText(hour + "" + "learning hour ," + country);
+            holder.skillCountry.setText(item.getCountry());
+            holder.learnersHour.setText(MessageFormat.format("{0} Learning hours", String.valueOf(item.getHours())));
+            Picasso.get().load(item.getBadgeUrl()).into(holder.learnerImg);
 
         }
 

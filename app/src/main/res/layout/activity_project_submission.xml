@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="com.example.gadsleaderboard.ProjectSubmissionActivity">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <RelativeLayout
@@ -51,6 +53,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,62 +62,92 @@
         android:textColor="#FF9800"
         android:textSize="25dp" />
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:layout_marginTop="70dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/firstname"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="First Name"
-            android:background="@drawable/buttpom_edittext" />
-
-        <EditText
-            android:id="@+id/lastname"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:hint="Last Name"
-            android:background="@drawable/buttpom_edittext" />
+            android:orientation="vertical">
 
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="20dp"
+                android:layout_marginTop="70dp"
+                android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="10dp"
-        android:hint="Email Adress"
-        android:background="@drawable/buttpom_edittext" />
+                <EditText
+                    android:id="@+id/firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttpom_edittext"
+                    android:hint="First Name"
+                    android:inputType="textEmailAddress" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/limkgithub"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:hint="Projecto on GITHUB(link)"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/buttpom_edittext"
-        android:textColor="@android:color/black" />
+                <EditText
+                    android:id="@+id/lastname"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttpom_edittext"
+                    android:hint="Last Name" />
 
-    <Button
-        android:id="@+id/buttomsubbmit"
-        android:layout_width="159dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/buttom_submit"
-        android:text="Submit"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:layout_margin="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/buttpom_edittext"
+                    android:hint="Email Adress" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/limkgithub"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="20dp"
+                    android:padding="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/buttpom_edittext"
+                    android:hint="Projecto on GITHUB(link)"
+                    android:inputType="textUri"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttomsubbmit"
+                android:layout_width="159dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/buttom_submit"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

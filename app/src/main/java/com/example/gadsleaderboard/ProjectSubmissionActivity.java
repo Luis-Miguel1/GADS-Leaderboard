@@ -12,14 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gadsleaderboard.model.LeadersHour;
 import com.example.gadsleaderboard.model.Post;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -30,7 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectSubmissionActivity extends AppCompatActivity {
     Button submission;
-    Button yes;
     ImageView back;
     EditText fisrtName, LastName, emailAdress;
     AppCompatEditText gitHubLink;
@@ -53,10 +51,6 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
         submission = findViewById(R.id.buttomsubbmit);
         myDialog = new Dialog(this);
 
-//        final String firtName=fisrtName.getText().toString();
-//        final String lastName=LastName.getText().toString();
-//        final String emailAdress=emailAdress.getText().toString();
-//        final String gitHubLink=gitHubLink.getText().toString();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +62,17 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
         submission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                 String firtname = fisrtName.getText().toString();
+                 String lastname = LastName.getText().toString();
+                 String emailadres = emailAdress.getText().toString();
+                 String githubLink = gitHubLink.getText().toString();
 
+                if (TextUtils.isEmpty(firtname) || TextUtils.isEmpty(lastname) || TextUtils.isEmpty(emailadres)
+                        || TextUtils.isEmpty(githubLink)) {
+                    Toast.makeText(getApplicationContext(), "The fields can not be empty", Toast.LENGTH_SHORT).show();
+                } else {
                     showpopComnfirmation();
+                }
             }
         });
 
@@ -78,36 +81,59 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
     private void request() {
 
 
+        Log.e("testerequest", "request");
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        Post post = new Post();
-        post.setFirstMame(fisrtName.getText().toString());
-        post.setLastName(LastName.getText().toString());
-        post.setEmail(emailAdress.getText().toString());
-        post.setLinkGitHub(Objects.requireNonNull(gitHubLink.getText()).toString());
+
 
         Api api = retrofit.create(Api.class);
-        api.sendPost(post).enqueue(new Callback<Post>() {
+        api.sendPost(fisrtName.getText().toString(), LastName.getText().toString(), emailAdress.getText().toString(),
+                gitHubLink.getText().toString()).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_LONG).show();
+                    Log.e("testerequest", "sucesso");
                     //hideRemoveProgressBar();
                     showpopUpSucess();
+
 
                 }
             }
 
             @Override
-            public void onFailure(Call<Post> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
-                Log.e("teste", "erro" + t.toString());
-             //   hideRemoveProgressBar();
+            public void onFailure(Call<Void> call, Throwable t) {
+                //   hideRemoveProgressBar();
                 showpopUpErro();
+
             }
         });
+//        api.sendPost(post.getFirstName(), post.getLastName(), post.getEmail(), post.getLinkGitHub()).enqueue(new Callback<Post>() {
+//        @Override
+//        public void onResponse(Call<Post> call, Response<Post> response) {
+//            if (response.isSuccessful()) {
+//                Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_LONG).show();
+//                Log.e("testerequest", "sucesso");
+//                //hideRemoveProgressBar();
+//                showpopUpSucess();
+//
+//
+//            }
+//        }
+//
+//        @Override
+//        public void onFailure(Call<Post> call, Throwable t) {
+//            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+//            Log.e("teste", "erro" + t.toString());
+//            //   hideRemoveProgressBar();
+//            showpopUpErro();
+//        }
+//    });
 
     }
 
@@ -142,6 +168,9 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
 
     public void showpopComnfirmation() {
         TextView close;
+        Button yes;
+
+
         myDialog.setContentView(R.layout.popup_confirmation);
         yes = myDialog.findViewById(R.id.yes);
         close = myDialog.findViewById(R.id.close);
@@ -154,9 +183,9 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 request();
-                 myDialog.dismiss();
-              //   mprogressBar.setVisibility(View.VISIBLE);
+                request();
+                myDialog.dismiss();
+                //   mprogressBar.setVisibility(View.VISIBLE);
 
             }
         });
