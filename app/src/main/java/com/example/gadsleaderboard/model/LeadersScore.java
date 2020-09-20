@@ -1,20 +1,15 @@
 package com.example.gadsleaderboard.model;
 
 public class LeadersScore {
+
+    private String name, score, country,badgeUrl;
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getScore() {
@@ -25,6 +20,14 @@ public class LeadersScore {
         this.score = score;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public String getBadgeUrl() {
         return badgeUrl;
     }
@@ -33,12 +36,10 @@ public class LeadersScore {
         this.badgeUrl = badgeUrl;
     }
 
-    public LeadersScore(String name, String country, String score, String badgeUrl) {
+    public LeadersScore(String name, String score, String skillCountry, String badgeUrl) {
         this.name = name;
-        this.country = country;
         this.score = score;
+        this.country = skillCountry;
         this.badgeUrl = badgeUrl;
     }
-
-    private String name, country, score,badgeUrl;
 }

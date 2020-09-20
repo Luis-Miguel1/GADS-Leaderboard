@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.gadsleaderboard.Api;
 import com.example.gadsleaderboard.R;
 import com.example.gadsleaderboard.model.LeadersScore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +150,7 @@ public class SkillIQLeadersFragment extends Fragment {
 
 
         public class LeaderScoreViewHolder extends RecyclerView.ViewHolder {
-            public TextView name,description;
+            public TextView name,score,skillCountry;
             public ImageView photo;
             ProgressBar mprogressBar;
             int pos;
@@ -157,9 +158,10 @@ public class SkillIQLeadersFragment extends Fragment {
 
             public  LeaderScoreViewHolder(View view) {
                 super(view);
-                name = view.findViewById(R.id.name);
-                description = view.findViewById(R.id.description);
-                photo = view.findViewById(R.id.photo);
+                name = view.findViewById(R.id.skillName);
+                score = view.findViewById(R.id.skillScore);
+                skillCountry = view.findViewById(R.id.skillCountry);
+                photo = view.findViewById(R.id.skillImg2);
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -193,11 +195,11 @@ public class SkillIQLeadersFragment extends Fragment {
         public void onBindViewHolder(@NonNull SkillIQLeadersFragment.LeaderScoreAdapter.LeaderScoreViewHolder holder, int position) {
 
             LeadersScore item = mylList.get(position);
-            //holder.photo.
             holder.name.setText(item.getName());
-            String country=item.getCountry();
-            String score=item.getScore();
-            holder.description.setText(score+""+" Skill IQ Score ,"+""+country);
+            holder.skillCountry.setText(item.getCountry());
+            holder.score.setText(item.getScore()+ " Skill IQ Score");
+            Picasso.get().load(item.getBadgeUrl()).into(holder.photo);
+
 
         }
 

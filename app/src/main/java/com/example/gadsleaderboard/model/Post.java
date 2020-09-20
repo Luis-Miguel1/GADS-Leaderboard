@@ -1,7 +1,17 @@
 package com.example.gadsleaderboard.model;
-
+import com.google.gson.annotations.SerializedName;
 public class Post {
-    private String linkGitHub, Email, LastName, firstMame;
+
+
+    @SerializedName("firstName")
+    private String firstName;
+    @SerializedName("linkGitHub")
+    private String linkGitHub;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("lastName")
+    private String lastName;
+
 
     public String getLinkGitHub() {
         return linkGitHub;
@@ -12,28 +22,28 @@ public class Post {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
-    public String getFirstMame() {
-        return firstMame;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstMame(String firstMame) {
-        this.firstMame = firstMame;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-
-
 }
+
+
