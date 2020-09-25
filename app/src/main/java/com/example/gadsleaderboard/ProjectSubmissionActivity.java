@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +36,7 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
     AppCompatEditText gitHubLink;
     Dialog myDialog;
     private String BASE_URL = "https://docs.google.com/forms/d/e/";
-    //ProgressBar mprogressBar;
+    AlertDialog myAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +64,10 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
         submission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 String firtname = fisrtName.getText().toString();
-                 String lastname = LastName.getText().toString();
-                 String emailadres = emailAdress.getText().toString();
-                 String githubLink = gitHubLink.getText().toString();
+                String firtname = fisrtName.getText().toString();
+                String lastname = LastName.getText().toString();
+                String emailadres = emailAdress.getText().toString();
+                String githubLink = gitHubLink.getText().toString();
 
                 if (TextUtils.isEmpty(firtname) || TextUtils.isEmpty(lastname) || TextUtils.isEmpty(emailadres)
                         || TextUtils.isEmpty(githubLink)) {
@@ -99,7 +101,7 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Log.e("testerequest", "sucesso");
-                    //hideRemoveProgressBar();
+                    hideRemoveProgressBar();
                     showpopUpSucess();
 
 
@@ -108,32 +110,12 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                //   hideRemoveProgressBar();
+                hideRemoveProgressBar();
                 showpopUpErro();
 
             }
         });
-//        api.sendPost(post.getFirstName(), post.getLastName(), post.getEmail(), post.getLinkGitHub()).enqueue(new Callback<Post>() {
-//        @Override
-//        public void onResponse(Call<Post> call, Response<Post> response) {
-//            if (response.isSuccessful()) {
-//                Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_LONG).show();
-//                Log.e("testerequest", "sucesso");
-//                //hideRemoveProgressBar();
-//                showpopUpSucess();
-//
-//
-//            }
-//        }
-//
-//        @Override
-//        public void onFailure(Call<Post> call, Throwable t) {
-//            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
-//            Log.e("teste", "erro" + t.toString());
-//            //   hideRemoveProgressBar();
-//            showpopUpErro();
-//        }
-//    });
+
 
     }
 
@@ -185,7 +167,7 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 request();
                 myDialog.dismiss();
-                //   mprogressBar.setVisibility(View.VISIBLE);
+                showProgressBar();
 
             }
         });
@@ -193,11 +175,19 @@ public class ProjectSubmissionActivity extends AppCompatActivity {
 
     }
 
+    private void showProgressBar() {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View deleteDialogView = factory.inflate(R.layout.progress_bar,null);
+        myAlert = new AlertDialog.Builder(this).create();
+        myAlert.setView(deleteDialogView);
+        myAlert.setTitle("Progress....");
+        myAlert.show();
 
-//    private void hideRemoveProgressBar() {
-//        if (mprogressBar.isShown()) {
-//            mprogressBar.setVisibility(View.GONE);
-//        }
-//
-//    }
+    }
+
+    private void hideRemoveProgressBar() {
+         myAlert.dismiss();
+    }
+
+
 }

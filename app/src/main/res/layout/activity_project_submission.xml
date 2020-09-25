@@ -13,43 +13,39 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0A0A0B"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        android:background="@android:color/black">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/black"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
-            <RelativeLayout
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize" />
+
+            <ImageView
+                android:id="@+id/back"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="@android:color/black"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="70dp"
+                android:src="@drawable/ic_baseline_arrow_back_24" />
 
-                <ImageView
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="70dp"
-                    android:src="@drawable/ic_baseline_arrow_back_24" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/gads" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:src="@drawable/gads" />
+        </RelativeLayout>
 
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -62,6 +58,13 @@
         android:textColor="#FF9800"
         android:textSize="25dp" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:src="@drawable/orange_bgrd" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -70,7 +73,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,21 +85,21 @@
                     android:id="@+id/firstname"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:padding="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/buttpom_edittext"
                     android:hint="First Name"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp" />
 
                 <EditText
                     android:id="@+id/lastname"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:padding="10dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/buttpom_edittext"
-                    android:hint="Last Name" />
+                    android:hint="Last Name"
+                    android:padding="10dp" />
 
 
             </LinearLayout>
@@ -111,11 +113,11 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:padding="10dp"
                     android:layout_margin="20dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/buttpom_edittext"
-                    android:hint="Email Adress" />
+                    android:hint="Email Adress"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -128,13 +130,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="20dp"
-                    android:padding="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/buttpom_edittext"
                     android:hint="Projecto on GITHUB(link)"
                     android:inputType="textUri"
+                    android:padding="10dp"
                     android:textColor="@android:color/black" />
             </LinearLayout>
 
